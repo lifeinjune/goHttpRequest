@@ -12,5 +12,12 @@ func main() {
 		fmt.Println("Error:", err) //print error statement
 		os.Exit(1)                 //terminate the program
 	}
-	fmt.Println(resp) //print get response
+	//fmt.Println(resp) //print get response
+
+	bs := make([]byte, 99999) // make empty byte slice with empty element of 99999 to begin with by using make function
+	resp.Body.Read(bs)
+	fmt.Println(string(bs))
 }
+
+// interface like reader is interface for many other output with different types and change them into something common
+// that will eliminate making or differnt function for all different source that doing same process
