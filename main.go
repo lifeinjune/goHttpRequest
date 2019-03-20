@@ -7,6 +7,8 @@ import (
 	"os"
 )
 
+type logWriter struct{}
+
 func main() {
 	resp, err := http.Get("http://google.com") // http get request by using http.Get function
 	if err != nil {                            //if there is error
@@ -27,7 +29,11 @@ func main() {
 	// */
 	// fmt.Println(string(bs))
 
-	io.Copy(os.Stdout, resp.Body) //simpler form of print out body of http request
+	lw := logWriter{}
+
+	io.Copy(lw, resp.Body)
+
+	//io.Copy(os.Stdout, resp.Body) //simpler form of print out body of http request
 	/*
 		io.Copy accept type Writer and Reader (writer as destination and reader as source) and copy the data from source to the destination
 		Writer is exactly oposit of the Reader it read the data from the program and interface (interpret) to many different source of output
@@ -36,3 +42,9 @@ func main() {
 
 // interface like reader is interface for many other output with different types and change them into something common
 // that will eliminate making or differnt function for all different source that doing same process
+
+func (logWriter) Write(bs []byte) (int, error) {
+	fmt.Println(string(bs))
+	fmt.Println("total", len(bs), "processed")
+	return len(bs), nil
+}
