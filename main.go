@@ -7,7 +7,7 @@ import (
 	"os"
 )
 
-type logWriter struct{}
+type logWriter struct{} //decalre struct
 
 func main() {
 	resp, err := http.Get("http://google.com") // http get request by using http.Get function
@@ -29,9 +29,9 @@ func main() {
 	// */
 	// fmt.Println(string(bs))
 
-	lw := logWriter{}
+	lw := logWriter{} //define struct
 
-	io.Copy(lw, resp.Body)
+	io.Copy(lw, resp.Body) //copy the request body to custom Write function
 
 	//io.Copy(os.Stdout, resp.Body) //simpler form of print out body of http request
 	/*
@@ -43,8 +43,8 @@ func main() {
 // interface like reader is interface for many other output with different types and change them into something common
 // that will eliminate making or differnt function for all different source that doing same process
 
-func (logWriter) Write(bs []byte) (int, error) {
-	fmt.Println(string(bs))
-	fmt.Println("total", len(bs), "processed")
-	return len(bs), nil
+func (logWriter) Write(bs []byte) (int, error) { //custom write function for logWriter
+	fmt.Println(string(bs))                          //print resp body
+	fmt.Println("total", len(bs), " byte processed") //print out total number of byte processed
+	return len(bs), nil                              //return requirements as interface as Writer
 }
